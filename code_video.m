@@ -41,43 +41,68 @@ reconstruct_global(:,:,length(beta_seq)+1) = U_fan(:,1:basis_seq)*U_fan(:,1:basi
 
 
 %%
+obj_row = [300:380];
+obj_col = [150:250];
+% figure;
+% imshow(frame_original(obj_row,obj_col));
+
+
 figure;
-t = tiledlayout(2,4, 'Padding', 'compact', 'TileSpacing', 'tight');
-nexttile(1)
+t = tiledlayout(3,4, 'Padding', 'compact', 'TileSpacing', 'tight');
+nexttile(1);
 tmp = reconstruct_global(:,:,4);   % background
-imshow(tmp)
-title(['Fan'], 'FontSize', 14)
+imshow(tmp);
+title(['Fan'], 'FontSize', 16);
 
-nexttile(5)
+nexttile(5);
 residual_map = abs(double(frame_original) - double(tmp)); % Residual Map
-imshow(residual_map)
-title(['Fan'], 'FontSize', 14)
+imshow(residual_map);
+title(['Fan'], 'FontSize', 16);
+
+nexttile(9);
+imshow(residual_map(obj_row,obj_col));
+title(['Fan'], 'FontSize', 16);
 
 
-for jj=1:length(beta_seq)
+for jj = 1:length(beta_seq)
     nexttile(1+jj);
     tmp = reconstruct_global(:,:,jj);  % background
-    imshow(tmp)
+    imshow(tmp);
     if beta_seq(jj)==0
-        title(['\beta → ',num2str(beta_seq(jj)),''], 'FontSize', 14)
+        title(['\beta → ',num2str(beta_seq(jj)),''], 'FontSize', 16);
     else
-        title(['\beta = ',num2str(beta_seq(jj)),''], 'FontSize', 14)
+        title(['\beta = ',num2str(beta_seq(jj)),''], 'FontSize', 16);
     end
 
     nexttile(5+jj);
     residual_map = abs(double(frame_original) - double(tmp));  % Residual Map
-    imshow(residual_map)
+    imshow(residual_map);
     if beta_seq(jj)==0
-        title(['\beta → ',num2str(beta_seq(jj)),''], 'FontSize', 14)
+        title(['\beta → ',num2str(beta_seq(jj)),''], 'FontSize', 16);
     else
-        title(['\beta = ',num2str(beta_seq(jj)),''], 'FontSize', 14)
+        title(['\beta = ',num2str(beta_seq(jj)),''], 'FontSize', 16);
     end
+    nexttile(9+jj);
+    imshow(residual_map(obj_row,obj_col))
+    if beta_seq(jj)==0
+        title(['\beta → ',num2str(beta_seq(jj)),''], 'FontSize', 16);
+    else
+        title(['\beta = ',num2str(beta_seq(jj)),''], 'FontSize', 16);
+    end
+    hold on;
+   
 end
+set(gcf, 'Position', [50, 10, 1300, 990]);  
+
 title_1 = ['(a) Projection to the leading rank-', num2str(basis_seq), ' eigenspace'];
-text(-700, -770, title_1, 'FontSize', 16, 'FontWeight', 'bold', 'HorizontalAlignment', 'center');
+text(-120, -250, title_1, 'FontSize', 16, 'FontWeight', 'bold', 'HorizontalAlignment', 'center');
 
 title_2 = ['(b) Residual map'];
-text(-700, -100, title_2, 'FontSize', 16, 'FontWeight', 'bold', 'HorizontalAlignment', 'center');
+text(-130, -130, title_2, 'FontSize', 16, 'FontWeight', 'bold', 'HorizontalAlignment', 'center');
+
+title_3 = ['(c) Zoomed-in region of the moving object'];
+text(-120, -20, title_3, 'FontSize', 16, 'FontWeight', 'bold', 'HorizontalAlignment', 'center');
+
 
 
 
